@@ -1,0 +1,61 @@
+<%- include('partials/header'); -%>
+<h1> sign up </h1>
+
+<form>
+    <div class="registration success"></div>
+    <label for="email">Email</label>
+    <input type="text" name="email" placeholder="Enter email"/>
+    <div class="email error"></div>
+    <label for="password">Password</label>
+    <input type="text" name="password" placeholder="Enter password"/>
+    <div class="password error"></div>
+    <button>Sign up</button>
+</form>
+<script>
+        const form = document.querySelector('form');
+        console.log('form =' ,form);
+const emailerr = document.querySelector('.email.error'); 
+const passworderr = document.querySelector('.password.error');
+const success = document.querySelector('.registration.success');
+
+ form.addEventListener('submit', async (e)  => {
+        e.preventDefault();
+
+        const email = form.email.value;
+        const password = form.email.value;
+        console.log(email,password)
+    
+        try{
+            
+            const res = await fetch('/signup',{
+                method: 'POST',
+                body: JSON.stringify({email,password}),
+                headers: {'Content-Type' :'application/json'}
+            });
+            const data =await res.json();
+            if(data.error){
+                emailerr.textContent=data.error;
+}
+if(data.new_user){
+    success.textContent='registration successfully you will move to sign in page in 5 secodes';
+   setTimeout(() =>{
+   success.textContent='time over';
+        location.assign('/signin');
+   },5000) ;
+}
+//console.log('stop here !!')
+        }
+        catch(err){
+            console.log('error is happend when i sent a request');
+console.log('error is = ' ,err);
+        }
+
+
+
+    })
+
+    
+</script>
+
+
+<%- include('partials/footer'); -%>
